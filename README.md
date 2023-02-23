@@ -1,1 +1,1 @@
-# UTA_SocialNetwork-API
+# Social Network API
