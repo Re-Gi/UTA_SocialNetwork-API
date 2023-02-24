@@ -8,6 +8,15 @@ module.exports = {
         .catch((err) => res.status(500).json(err));
     },
     // get a single thought by its _id
+    getSingleThought(req, res) {
+        Thought.findOne({ _id: req.params.thoughtId })
+          .then((thought) =>
+            !thought
+              ? res.status(404).json({ message: 'No thought with that ID' })
+              : res.json(thought)
+          )
+          .catch((err) => res.status(500).json(err));
+      },
     // create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
     createThought(req, res) {
         Thought.create(req.body)
@@ -40,6 +49,6 @@ module.exports = {
               : res.status(200).json(thought)
           )
           .catch((err) => res.status(500).json(err));
-      },
+    },
     // pull and remove a reaction by the reaction's reactionId value
 };
