@@ -18,20 +18,28 @@ module.exports = {
                     { new: true }
                 );
             })
-            .then((user) => {
-                if(!user) {
-                    res.status(404).json({ message: 'Thought created, but found no user with that ID.' });
-                } else {
-                    res.status(200).json('Thought created!');
-                };
-            })
-            .catch((err) => {
-                console.log(err);
-                res.status(500).json(err);
-            });
+            .then((user) =>
+                !user
+                 ? res.status(404).json({ message: 'Thought created, but found no user with that ID.' })
+                 : res.status(200).json('Thought created!')
+            )
+            .catch((err) => res.status(500).json(err));
     },
     // update a thought by its _id
     // remove a thought by its _id
     // create a reaction stored in a single thought's reactions array field
+    addReaction(req, res) {
+        Thought.findOneAndUpdate(
+          { _id: req.params.thoughtId },
+          { $addToSet: { reactions: req.body } },
+          { runValidators: true, new: true }
+        )
+          .then((thought) =>
+            !thought
+              ? res.status(404).json({ message: 'No thought with this id!' })
+              : res.status(200).json(thought)
+          )
+          .catch((err) => res.status(500).json(err));
+      },
     // pull and remove a reaction by the reaction's reactionId value
 };
