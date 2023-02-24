@@ -4,12 +4,15 @@ module.exports = {
     // get all thoughts
     getThoughts(req, res) {
         Thought.find()
+        .select('-__v')
         .then((thoughts) => res.json(thoughts))
         .catch((err) => res.status(500).json(err));
     },
     // get a single thought by its _id
     getSingleThought(req, res) {
         Thought.findOne({ _id: req.params.thoughtId })
+          .select('-__v')
+          .populate('reactions')
           .then((thought) =>
             !thought
               ? res.status(404).json({ message: 'No thought with that ID' })
