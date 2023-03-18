@@ -20,7 +20,7 @@ module.exports = {
               : res.json(user)
           )
           .catch((err) => res.status(500).json(err));
-      },
+    },
     // create a new user
     createUser(req, res) {
         User.create(req.body)
@@ -45,12 +45,12 @@ module.exports = {
         .catch((err) => res.status(500).json(err));
     },
     // remove a user by its _id
-     // BONUS: Remove a user's associated thoughts when deleted
      deleteUser(req, res) {
       User.findOneAndDelete({ _id: req.params.userId })
         .then((user) =>
           !user
             ? res.status(404).json({ message: 'No user with that ID' })
+            // remove a user's associated thoughts when deleted
             : Thought.deleteMany({ _id: { $in: user.thoughts } })
         )
         .then(() => res.json({ message: 'User and thoughts deleted!' }))

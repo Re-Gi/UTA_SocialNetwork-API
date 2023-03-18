@@ -12,7 +12,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      // Must match a valid email address (look into Mongoose's matching validation)
+      // Must match a valid email address
       match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/],
     },
     thoughts: [
@@ -36,7 +36,7 @@ const userSchema = new Schema(
   }
 );
 
-// Create a virtual called `friendCount` that retrieves the length of the user's `friends` array field on query.
+// a virtual that retrieves the length of the user's `friends` array field on query.
 userSchema.virtual('friendCount').get(function () {
     return this.friends.length;
 });

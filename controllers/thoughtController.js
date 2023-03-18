@@ -12,15 +12,14 @@ module.exports = {
     getSingleThought(req, res) {
         Thought.findOne({ _id: req.params.thoughtId })
           .select('-__v')
-          .populate('reactions')
           .then((thought) =>
             !thought
               ? res.status(404).json({ message: 'No thought with that ID' })
               : res.json(thought)
           )
           .catch((err) => res.status(500).json(err));
-      },
-    // create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
+    },
+    // create a new thought and add the created thought's _id to the associated user's 'thoughts' array field
     createThought(req, res) {
         Thought.create(req.body)
             .then((thought) => {
